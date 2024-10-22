@@ -12,26 +12,43 @@ public:
 	BSplineSurface();
 	~BSplineSurface();
 
-	void render() const;
+	void DrawBSpline() const;
 
 private:
-    void initControlPoints();  // Initialize control points
-    void generateSurface();    // Generate the B-Spline surface
-    void setupBuffers();       // Setup VAO, VBO, and EBO
-    float N(int i, int d, float t, const std::vector<float>& knots);  // B-Spline basis function
+    // Initialiserer kontrollpunktene
+    void initControlPoints();
 
-    // Control points, vertices, and indices
+    // Basert på kontrollpunktene genererer det B-Spline surface
+    void generateSurface();
+
+    // Buffere
+    void setupBuffers();
+
+    // Brukes til å konstruere surface ved å beregne B-Spline basisfunksjonen
+    // Kontrollpunktindex = i, grad = d, parameteren = t, knot sekvens = knots
+    // t Parameter man bruker for å tegne kurven. Finner ut av hvor mye et punkt bidrar til formen på kurven
+    float N(int i, int d, float t, const std::vector<float>& knots);
+
+    // Har lista over kontrollpunkter
     std::vector<glm::vec3> controlPoints;
+
+    // Liste over vertices
     std::vector<glm::vec3> surfaceVertices;
+
+    // Surface sin indekser som brukes for å tegne surface
     std::vector<unsigned int> surfaceIndices;
 
-    // Knot vectors
-    std::vector<float> knotVectorU{ 0.0f, 0.0f, 0.0f, 1.0f, 2.0f, 2.0f, 2.0f };  // Knot vector for U direction
-    std::vector<float> knotVectorV{ 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f };  // Knot vector for V direction
+    // Disse er knot vektorene for parameterene U og V
+    // Bestemmer hvordan kontrollpunktene på virker formen på surface
+    std::vector<float> knotVectorU{ 0.0f, 0.0f, 0.0f, 1.0f, 2.0f, 2.0f, 2.0f };  
+    std::vector<float> knotVectorV{ 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f };  
 
-    // Degree for the B-Spline surface
-    int d_u = 2;  // Degree in U direction
-    int d_v = 2;  // Degree in V direction
+    // Grad for B-Spline
+    // u og v retning
+    // Påvirker formen
+    // [eit kvadrat av eit kvadrat]
+    int d_u = 2; 
+    int d_v = 2; 
 
     GLuint VAO, VBO, EBO;
 };

@@ -29,7 +29,6 @@ float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f;
 
 
-
 int main()
 {
 	glfwInit(); //Initialize GLFW
@@ -97,7 +96,7 @@ int main()
 		//box.DrawBox();
 
 		// Draw BSplineSurface
-		bsplineSurface.render();
+		bsplineSurface.DrawBSpline();
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();

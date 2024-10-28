@@ -5,6 +5,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <vector>
+#include "shaderClass.h"
 
 class BSplineSurface 
 {
@@ -12,7 +13,7 @@ public:
 	BSplineSurface();
 	~BSplineSurface();
 
-	void DrawBSpline() const;
+	void DrawBSpline(Shader shaderProgram) const;
 
 private:
     // Initialiserer kontrollpunktene
@@ -27,7 +28,7 @@ private:
     // Brukes til å konstruere surface ved å beregne B-Spline basisfunksjonen
     // Kontrollpunktindex = i, grad = d, parameteren = t, knot sekvens = knots
     // t Parameter man bruker for å tegne kurven. Finner ut av hvor mye et punkt bidrar til formen på kurven
-    float N(int i, int d, float t, const std::vector<float>& knots);
+    float N(int i, int d, float t, const std::vector<float>& knots) const;
 
     // Har lista over kontrollpunkter
     std::vector<glm::vec3> controlPoints;
@@ -49,6 +50,17 @@ private:
     // [eit kvadrat av eit kvadrat]
     int d_u = 2; 
     int d_v = 2; 
+
+    std::vector<glm::vec3> surfaceNormals; // Normals for each vertex
+    void calculateNormals(); // New method to calculate normals
+    void setupNormalBuffers(); // Sets up buffers for normal lines
+
+    float NPrime(int i, int d, float t, const std::vector<float>& knots) const;
+
+    glm::vec3 calculatePartialDerivativeU(float u, float v) const;
+    glm::vec3 calculatePartialDerivativeV(float u, float v) const;
+
+    GLuint normalVAO, normalVBO;
 
     GLuint VAO, VBO, EBO;
 };

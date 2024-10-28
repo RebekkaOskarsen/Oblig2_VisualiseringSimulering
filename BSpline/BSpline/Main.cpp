@@ -20,7 +20,7 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 800;
 
-Camera camera(glm::vec3(0.0f, 2.0f, 10.0f));
+Camera camera(glm::vec3(2.0f, 1.0f, 10.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -96,7 +96,7 @@ int main()
 		//box.DrawBox();
 
 		// Draw BSplineSurface
-		bsplineSurface.DrawBSpline();
+		bsplineSurface.DrawBSpline(shaderProgram);
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();

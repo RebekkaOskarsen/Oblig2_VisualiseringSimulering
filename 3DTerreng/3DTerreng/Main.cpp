@@ -36,7 +36,8 @@ struct Vertex
 vector<Vertex> loadAndCenterPoints(const string& filename) 
 {
 	ifstream file(filename);
-	if (!file.is_open()) {
+	if (!file.is_open()) 
+	{
 		cout << "Error: Unable to open file " << filename << endl;
 		return {};  // Return an empty vector if the file can't be opened
 	}
@@ -45,15 +46,23 @@ vector<Vertex> loadAndCenterPoints(const string& filename)
 	glm::vec3 min(FLT_MAX), max(-FLT_MAX);
 	string line;
 
+	// Read the first line as the header (point count) and discard it
+	if (getline(file, line)) 
+	{
+		cout << "Point count header: " << line << endl;
+	}
+
+	int lineNumber = 1;
 	while (getline(file, line))
 	{
+		lineNumber++;
 		Vertex vertex;
 		stringstream ss(line);
 		ss >> vertex.position.x >> vertex.position.z >> vertex.position.y;
 
 		if (ss.fail()) {
-			cout << "Error: Failed to read coordinates on line: " << line << endl;
-			continue;
+			cout << "Error: Failed to read coordinates on line " << lineNumber << ": " << line << endl;
+			continue;  // Skip this line and move to the next one
 		}
 
 		min = glm::min(min, vertex.position);
@@ -62,12 +71,6 @@ vector<Vertex> loadAndCenterPoints(const string& filename)
 	}
 
 	file.close();
-
-	// Check if any points were loaded
-	if (vertices.empty()) {
-		cout << "Error: No points loaded from file " << filename << endl;
-		return vertices;  // Return if no points were loaded
-	}
 
 	// Calculate the center of the bounding box
 	glm::vec3 center = (min + max) / 2.0f;
@@ -130,7 +133,7 @@ int main()
 	glEnableVertexAttribArray(0);
 
 	// Set point size
-	glPointSize(5.0f); // Increase point size for better visibility
+	glPointSize(2.0f); // Increase point size for better visibility
 
 	glEnable(GL_DEPTH_TEST);
 	
